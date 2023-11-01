@@ -1,0 +1,131 @@
+---
+title: "Data Visualization"
+output: html_document
+date: "2023-11-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 01 Data Visualization Basics
+
+From: [Posit Primers](https://posit.cloud/learn/primers/1.1)
+
+### 01.01 Import Data
+
+```{r}
+library(ggplot2)
+mpg
+```
+
+### 01.02 Make first plot
+
+```{r}
+ggplot(data=mpg)+ geom_point(mapping=aes(x=displ,y=hwy))
+```
+
+**Explanation**:\
+1. ``` ggplot(``) ```: Creates coordinate system that can add layers to, First argument is dataset, by itself creates empty graph
+
+2.   `geom_point()`:
+    1.  Adds layer of points to the empty plot
+    2.  \``mapping`\`-argument: Defines which variables mapped to hich axes, always *paired* with function `aes()` which use gather all mappings
+
+**Summary**:
+
+1.  Start graph with `ggplot()`
+2.  Add elements to graph with a `geom_` function
+3.  Select variables with the `mapping=aes()` argument
+
+**Common mistakes**:
+
+1.  Adding the `+` at the wrong place, has to come at end of line
+
+### 01.03 Aesthetics
+
+**What is an aesthetic**:
+
+-   Visual property of objects in plot (`size, shape, color`)
+
+-   Use *level* to describe aesthetic properties
+
+-   To use: Set name of aesthetic (aka. `color` or `shape` equal to name of variable inside `mapping=aes()`
+
+-   Find out aesthetics availabele for `geom`: `?geom_line`
+
+```{r}
+ggplot(data=mpg)+ geom_point(mapping=aes(x=displ, y=hwy, color=class))
+```
+
+#### 01.03.01 The alpha aesthetic
+
+**What is the alpha aesthetic**
+
+-   controls the transparency
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, alpha=class))
+
+```
+
+#### 01.03.02 Aesthetics for continuos variables
+
+```{r}
+# Map cty to color
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color=cty))
+```
+
+### 01.03.03 Using multiple aesthetics
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color=class, size=class, shape=class))
+```
+
+#### 01.03.04 Map aesthetic to something other than variable name
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color=displ<5))
+```
+
+### 01.03.05 Set all to same thing
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+
+```
+
+**MERKE**: Settiing the aesthetic fo a value like `blue` above: outside of `aes()` , Mapping the aesthetic to a **varibale**: Inside of `aes()`
+
+## 01.04 Geometric Objects
+
+**What is a geom**
+
+-   Geom: geometrical object that a plot uses to represent observations (bar chart use bar geoms, boxplots use boxplot geoms, scatterplots use **point** geoms)
+
+-   To change. chage the `geom` function that was added to `ggplot()`
+
+-   Overview can be found: <https://exts.ggplot2.tidyverse.org/gallery/>
+
+-   Learn about geoms: `?geom_smooth`
+
+-   
+
+**Examples of geoms**
+
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy),se=TRUE)
+
+```
+
+```{r}
+?geom_smooth
+```
+
+-   `se`: Can be `TRUE` or `FALSE`, show standard error ribbon
